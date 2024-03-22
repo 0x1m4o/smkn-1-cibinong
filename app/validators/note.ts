@@ -5,6 +5,7 @@ export const noteValidator = vine.object({
   isi: vine.string(),
 })
 
+
 vine.messagesProvider = new SimpleMessagesProvider({
   required: 'Mohon untuk tidak mengkosongkan field {{ field }}',
   string: 'Field {{ field }} harus bertipe data string',

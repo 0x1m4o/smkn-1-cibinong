@@ -8,7 +8,9 @@
 */
 
 import NotesController from '#controllers/notes_controller'
+import UsersController from '#controllers/users_controller'
 import router from '@adonisjs/core/services/router'
+import { middleware } from './kernel.js'
 
 router.get('/', () => 'Hello World')
 
@@ -23,4 +25,20 @@ router.get('/', () => 'Hello World')
 // router.delete('/notes', [NotesController, 'destroy'])
 
 // Resource
-router.resource('/notes', NotesController)
+router.group(()=>{
+    router.resource('/notes', NotesController)
+}).use([
+    // Middleware akan dieksekusi sebelum controller dieksekusi 
+    middleware.authentication()
+])
+
+
+router.group(()=>{
+    // /users/register
+    router.post('/register', [UsersController, 'register'])
+
+    // /users/login
+    router.post('/login', [UsersController, 'login'])
+
+}).prefix('/users')
+
