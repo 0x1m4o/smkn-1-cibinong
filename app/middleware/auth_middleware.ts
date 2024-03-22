@@ -13,13 +13,24 @@ export default class AuthMiddleware {
   redirectTo = '/login'
 
   async handle(
-    ctx: HttpContext,
+    { request, response, auth }: HttpContext,
     next: NextFn,
     options: {
       guards?: (keyof Authenticators)[]
     } = {}
   ) {
-    await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
-    return next()
+
+    if (auth.isAuthenticated) {
+      // User is already authenticated, proceed to the next middleware or route handler
+      return next()
+    }
+
+    // Try to authenticate the user using the specified guards
+    try {
+      await request.ctx?.auth.authenticateUsing(options.guards)
+      return next()
+    } catch (error) {
+      return response.unauthorized({ message: 'Authentication failed. Please log in.' })
+    }
   }
 }

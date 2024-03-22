@@ -7,14 +7,11 @@ export default class NotesController {
   /**
    * Display a list of resource (Read All)
    */
-  async index({ response, auth }: HttpContext) {
-    console.log(auth.isAuthenticated)
+  async index({ response,  }: HttpContext) {
 
-    if (auth.isAuthenticated) {
       var notes = await Note.query()
   
       return response.ok({ data: notes })
-    }
   }
 
   /**

@@ -27,10 +27,10 @@ router.get('/', () => 'Hello World')
 // Resource
 router.group(()=>{
     router.resource('/notes', NotesController)
-}).use([
+}).use(
     // Middleware akan dieksekusi sebelum controller dieksekusi 
-    middleware.authentication()
-])
+    middleware.auth({guards: ['api']})
+)
 
 
 router.group(()=>{
